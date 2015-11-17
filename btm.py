@@ -1,5 +1,5 @@
 
-from decimal import Decimal
+import decimal
 
 class BTM:
 

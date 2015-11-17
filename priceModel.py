@@ -1,5 +1,5 @@
 
-from decimal import Decimal
+import decimal
 
 class PriceModel:
 
@@ -8,7 +8,7 @@ class PriceModel:
         self.totalAmountBills = totalAmountBills
         self.currentAmountBills = currentAmountBills
         self.currentAmountBitcoin = currentAmountBitcoin
-        self.eccentricity = Decimal("1")
+        self.eccentricity = decimal.Decimal("1")
 
     def calculate(amountBills):
         amountBitcoin = self.eccentricity * ((((self.totalAmountBills -
