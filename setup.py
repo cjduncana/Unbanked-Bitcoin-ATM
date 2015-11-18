@@ -1,3 +1,4 @@
+
 from setuptools import setup
 
 setup(name='btm',
@@ -5,7 +6,7 @@ setup(name='btm',
     ATM that does not need to be serviced nor \
     need to be connected to an exchange',
     url='https://github.com/cjduncana/Unbanked-Bitcoin-ATM',
-    packages=['btm'],
+    packages=['btm', 'btm/models'],
     zip_safe=False,
     classifiers=[
     	'Development Status :: 1 - Planning',

@@ -10,7 +10,7 @@ class PriceModel:
         self.currentAmountBitcoin = currentAmountBitcoin
         self.eccentricity = decimal.Decimal("1")
 
-    def calculate(amountBills):
+    def calculate(self, amountBills):
         amountBitcoin = self.eccentricity * ((((self.totalAmountBills \
         - amountBills - self.currentAmountBills) \
         * (self.currentAmountBills)) / ((amountBills \

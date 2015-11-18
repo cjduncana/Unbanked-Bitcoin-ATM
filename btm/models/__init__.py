@@ -1,0 +1,2 @@
+
+from price import PriceModel
