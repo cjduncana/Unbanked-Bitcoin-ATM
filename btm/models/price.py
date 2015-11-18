@@ -1,7 +1,7 @@
 
 import decimal
 
-class PriceModel:
+class PriceModel(object):
 
     def __init__(self, totalAmountBills,
                  currentAmountBills, currentAmountBitcoin):
