@@ -1,6 +1,4 @@
 
-import decimal
-
 import models
 
 class BTM(object):
