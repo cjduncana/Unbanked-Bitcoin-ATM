@@ -3,7 +3,7 @@ import decimal
 
 import models
 
-class BTM:
+class BTM(object):
 
     def __init__(self, totalAmountBills,
                  currentAmountBills, currentAmountBitcoin):
