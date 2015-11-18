@@ -5,16 +5,16 @@ import models
 
 class BTM:
 
-	def __init__(self, totalAmountBills,
+    def __init__(self, totalAmountBills,
                  currentAmountBills, currentAmountBitcoin):
-		self.priceModel = models.PriceModel(totalAmountBills,
-                					        currentAmountBills,
-                					        currentAmountBitcoin)
+        self.priceModel = models.PriceModel(totalAmountBills,
+                                            currentAmountBills,
+                                            currentAmountBitcoin)
 
-	def  buy_bills(self, amountBills):
-		nAmountBills = amountBills.copy_negate()
-		return self.priceModel.calculate(nAmountBills)
+    def  buy_bills(self, amountBills):
+        nAmountBills = amountBills.copy_negate()
+        return self.priceModel.calculate(nAmountBills)
 
-	def sell_bills(self, amountBills):
-		amountBitcoin = self.priceModel.calculate(amountBills)
-		return amountBitcoin.copy_negate()
+    def sell_bills(self, amountBills):
+        amountBitcoin = self.priceModel.calculate(amountBills)
+        return amountBitcoin.copy_negate()
