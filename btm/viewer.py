@@ -30,16 +30,15 @@ class BTMWindow(Gtk.ApplicationWindow):
             grid.attach(label, x, 0, 1, 1)
 
         for x in range(-3, 0):
-            button = Gtk.Button(
-                label = xbtm.buy_bills(
-                    decimal.Decimal(x)).quantize(TWOPLACES))
+            button = Gtk.Button(label = xbtm.priceModel.calculate(
+                            decimal.Decimal(x)).quantize(TWOPLACES))
             button.set_can_focus(False)
             button.set_margin_end(2)
             grid.attach(button, x + 3, 1, 1, 1)
         for x in range(1, 4):
-            button = Gtk.Button(
-                label = xbtm.sell_bills(
-                    decimal.Decimal(x)).quantize(TWOPLACES))
+            button = Gtk.Button(label = xbtm.priceModel.calculate(
+                    decimal.Decimal(x))\
+                    .quantize(TWOPLACES).copy_negate())
             button.set_can_focus(False)
             button.set_margin_end(2)
             grid.attach(button, x + 2, 1, 1, 1)

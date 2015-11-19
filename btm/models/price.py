@@ -19,3 +19,15 @@ class PriceModel(object):
         * ((1 - amountBills.exp()) / (amountBills.exp())))
 
         return amountBitcoin
+
+    def set_total_amount_bills(self, amount):
+        self.totalAmountBills = amount
+
+    def change_amount_bills(self, amount):
+        self.currentAmountBills += amount
+
+    def change_amount_bitcoin(self, amount):
+        self.currentAmountBitcoin += amount
+
+    def change_eccentricity(self, eccentricity):
+        self.eccentricity += eccentricity
