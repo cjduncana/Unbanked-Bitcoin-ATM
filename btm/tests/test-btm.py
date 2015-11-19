@@ -21,12 +21,12 @@ class TestBTM(unittest.TestCase):
         xbtm = btm.BTM(decimal.Decimal("100"),
                        decimal.Decimal("50"),
                        decimal.Decimal("50"))
-        assert xbtm.buy_bills(decimal.Decimal("1")) \
+        assert xbtm.priceModel.calculate(decimal.Decimal("-1")) \
             == decimal.Decimal("85.95409675756596092944844792")
 
     def test_sell_bills(self):
         xbtm = btm.BTM(decimal.Decimal("100"),
                        decimal.Decimal("50"),
                        decimal.Decimal("50"))
-        assert xbtm.sell_bills(decimal.Decimal("1")) \
-            == decimal.Decimal("31.64603327604158308165788586")
+        assert xbtm.priceModel.calculate(decimal.Decimal("1")) \
+            == decimal.Decimal("-31.64603327604158308165788586")
