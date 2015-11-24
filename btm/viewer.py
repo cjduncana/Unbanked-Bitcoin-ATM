@@ -9,8 +9,8 @@ class BTMWindow(Gtk.ApplicationWindow):
 
     def __init__(self, app, totalAmountBills,
                  currentAmountBills, currentAmountBitcoin):
-        Gtk.Window.__init__(self,
-                            title = "Bitcoin ATM", application = app)
+        Gtk.Window.__init__(self, application = app)
+        self.set_title("Bitcoin ATM")
         self.set_border_width(10)
 
         TWOPLACES = decimal.Decimal("0.01")
@@ -55,7 +55,7 @@ class BTMWindow(Gtk.ApplicationWindow):
 class InfoWindow(Gtk.ApplicationWindow):
 
     def __init__(self, app):
-        Gtk.Window.__init__(self, title = "", application = app)
+        Gtk.Window.__init__(self, application = app)
 
         grid = Gtk.Grid()
 
