@@ -13,8 +13,6 @@ class BTMWindow(Gtk.ApplicationWindow):
         self.set_title("Bitcoin ATM")
         self.set_border_width(10)
 
-        TWOPLACES = decimal.Decimal("0.01")
-
         self.xbtm = btm.BTM(decimal.Decimal(totalAmountBills),
                        decimal.Decimal(currentAmountBills),
                        decimal.Decimal(currentAmountBitcoin))
@@ -30,6 +28,8 @@ class BTMWindow(Gtk.ApplicationWindow):
 
         labels = ["Buy 3", "Buy 2", "Buy 1",
                   "Sell 1", "Sell 2", "Sell 3"]
+
+        TWOPLACES = decimal.Decimal("0.01")
 
         for x in range(6):
             label = Gtk.Label(labels[x])
