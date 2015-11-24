@@ -15,9 +15,16 @@ class BTMWindow(Gtk.ApplicationWindow):
 
         TWOPLACES = decimal.Decimal("0.01")
 
-        xbtm = btm.BTM(decimal.Decimal(totalAmountBills),
+        self.xbtm = btm.BTM(decimal.Decimal(totalAmountBills),
                        decimal.Decimal(currentAmountBills),
                        decimal.Decimal(currentAmountBitcoin))
+
+        update_BTM_screen()
+
+    def update_BTM_screen(self):
+
+        for child in self.get_children():
+            self.remove(child) 
 
         grid = Gtk.Grid()
 
@@ -30,13 +37,13 @@ class BTMWindow(Gtk.ApplicationWindow):
             grid.attach(label, x, 0, 1, 1)
 
         for x in range(-3, 0):
-            button = Gtk.Button(label = xbtm.priceModel.calculate(
+            button = Gtk.Button(label = self.xbtm.priceModel.calculate(
                             decimal.Decimal(x)).quantize(TWOPLACES))
             button.set_can_focus(False)
             button.set_margin_end(2)
             grid.attach(button, x + 3, 1, 1, 1)
         for x in range(1, 4):
-            button = Gtk.Button(label = xbtm.priceModel.calculate(
+            button = Gtk.Button(label = self.xbtm.priceModel.calculate(
                     decimal.Decimal(x))\
                     .quantize(TWOPLACES).copy_negate())
             button.set_can_focus(False)
