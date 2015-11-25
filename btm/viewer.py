@@ -97,7 +97,7 @@ class BTMApp(Gtk.Application):
         Gtk.Application.__init__(self)
 
     def do_activate(self):
-        win = BTMWindow(self)
+        BTMWindow(self)
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
