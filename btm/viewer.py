@@ -45,6 +45,7 @@ class BTMWindow(Gtk.ApplicationWindow):
                             decimal.Decimal(x)).quantize(TWOPLACES))
             button.set_can_focus(False)
             button.set_margin_end(2)
+            button.connect("clicked", self.buy, -x)
             grid.attach(button, x + 3, 1, 1, 1)
         for x in range(1, 4):
             button = Gtk.Button(label = self.xbtm.priceModel.calculate(
@@ -52,9 +53,19 @@ class BTMWindow(Gtk.ApplicationWindow):
                     .quantize(TWOPLACES).copy_negate())
             button.set_can_focus(False)
             button.set_margin_end(2)
+            button.connect("clicked", self.sell, x)
             grid.attach(button, x + 2, 1, 1, 1)
 
         self.add(grid)
+        self.show_all()
+
+    def buy(self, button, amount):
+        self.xbtm.buy_bills(decimal.Decimal(amount))
+        self.update_BTM_screen()
+    
+    def sell(self, button, amount):
+        self.xbtm.sell_bills(decimal.Decimal(amount))
+        self.update_BTM_screen()
 
 class InfoWindow(Gtk.ApplicationWindow):
 
