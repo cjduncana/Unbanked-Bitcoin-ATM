@@ -17,7 +17,7 @@ class BTMWindow(Gtk.ApplicationWindow):
                        decimal.Decimal(currentAmountBills),
                        decimal.Decimal(currentAmountBitcoin))
 
-        update_BTM_screen()
+        self.update_BTM_screen()
 
     def update_BTM_screen(self):
 
