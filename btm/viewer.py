@@ -7,17 +7,21 @@ import btm
 
 class BTMWindow(Gtk.ApplicationWindow):
 
-    def __init__(self, app, totalAmountBills,
-                 currentAmountBills, currentAmountBitcoin):
+    def __init__(self, app):
         Gtk.Window.__init__(self, application = app)
         self.set_title("Bitcoin ATM")
         self.set_border_width(10)
 
+        info = InfoWindow(app, self)
+        info.show_all()      
+
+    def initiate_BTM(self, totalAmountBills,
+                     currentAmountBills, currentAmountBitcoin):
         self.xbtm = btm.BTM(decimal.Decimal(totalAmountBills),
                        decimal.Decimal(currentAmountBills),
                        decimal.Decimal(currentAmountBitcoin))
-
         self.update_BTM_screen()
+        self.show_all()
 
     def update_BTM_screen(self):
 
@@ -54,8 +58,9 @@ class BTMWindow(Gtk.ApplicationWindow):
 
 class InfoWindow(Gtk.ApplicationWindow):
 
-    def __init__(self, app):
+    def __init__(self, app, window):
         Gtk.Window.__init__(self, application = app)
+        self.window = window
 
         grid = Gtk.Grid()
 
@@ -81,11 +86,10 @@ class InfoWindow(Gtk.ApplicationWindow):
         self.add(grid)
 
     def on_submit_clicked(self, button):
-        win = BTMWindow(app,
-            self.tBillsEntry.get_text(),
-            self.cBillsEntry.get_text(),
-            self.cBitcoinEntry.get_text())
-        win.show_all()
+        self.window.initiate_BTM(self.tBillsEntry.get_text(),
+                                 self.cBillsEntry.get_text(),
+                                 self.cBitcoinEntry.get_text())
+        self.destroy()
 
 class BTMApp(Gtk.Application):
 
@@ -93,8 +97,7 @@ class BTMApp(Gtk.Application):
         Gtk.Application.__init__(self)
 
     def do_activate(self):
-        win = InfoWindow(self)
-        win.show_all()
+        win = BTMWindow(self)
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
