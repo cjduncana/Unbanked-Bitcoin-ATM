@@ -17,6 +17,5 @@ class BTM(object):
 
     def sell_bills(self, amountBills):
         amountBitcoin = self.priceModel.calculate(amountBills)
-        nAmountBitcoin = amountBitcoin.copy_negate()
         self.priceModel.change_amount_bills(amountBills)
-        self.priceModel.change_amount_bitcoin(nAmountBitcoin)
+        self.priceModel.change_amount_bitcoin(amountBitcoin)
