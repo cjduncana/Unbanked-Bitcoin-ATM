@@ -1,38 +1,51 @@
 
+from gi.repository import GObject, Gtk
+
 import decimal
-from gi.repository import Gtk
 import sys
+import threading
+import time
 
 import btm
+import pid
 
 class BTMWindow(Gtk.ApplicationWindow):
 
     def __init__(self, app):
         Gtk.Window.__init__(self, application = app)
+
         self.set_title("Bitcoin ATM")
         self.set_border_width(10)
+        self.connect("update", self.update_BTM_screen)
 
-        info = InfoWindow(app, self)
-        info.show_all()      
+        self.info = InfoWindow(app, self)
+        self.info.show_all()      
 
     def initiate_BTM(self, totalAmountBills,
                      currentAmountBills, currentAmountBitcoin):
         self.xbtm = btm.BTM(decimal.Decimal(totalAmountBills),
                        decimal.Decimal(currentAmountBills),
                        decimal.Decimal(currentAmountBitcoin))
-        self.update_BTM_screen()
+
         self.show_all()
+        self.info.destroy()
+        self.emit("update")
 
-    def update_BTM_screen(self):
+        self.xpid = pid.PID(
+            decimal.getcontext().divide_int(decimal.Decimal(
+                self.xbtm.priceModel.totalAmountBills), 2),
+            decimal.Decimal(
+                self.xbtm.priceModel.currentAmountBills))
 
+        GObject.timeout_add(10 * 1000, self.update_PID)
+
+    def update_BTM_screen(self, window):
         for child in self.get_children():
-            self.remove(child) 
+            self.remove(child)
 
         grid = Gtk.Grid()
-
         labels = ["Buy 3", "Buy 2", "Buy 1",
                   "Sell 1", "Sell 2", "Sell 3"]
-
         TWOPLACES = decimal.Decimal("0.01")
 
         for x in range(6):
@@ -47,6 +60,7 @@ class BTMWindow(Gtk.ApplicationWindow):
             button.set_margin_end(2)
             button.connect("clicked", self.buy, -x)
             grid.attach(button, x + 3, 1, 1, 1)
+
         for x in range(1, 4):
             button = Gtk.Button(label = self.xbtm.priceModel.calculate(
                     decimal.Decimal(x))\
@@ -61,11 +75,20 @@ class BTMWindow(Gtk.ApplicationWindow):
 
     def buy(self, button, amount):
         self.xbtm.buy_bills(decimal.Decimal(amount))
-        self.update_BTM_screen()
+        self.emit("update")
     
     def sell(self, button, amount):
         self.xbtm.sell_bills(decimal.Decimal(amount))
-        self.update_BTM_screen()
+        self.emit("update")
+
+    def update_PID(self):
+        self.xpid.add_point(self.xbtm.priceModel.currentAmountBills)
+        controlVariable = self.xpid.update()
+        eccentricityChange = controlVariable \
+        / self.xbtm.priceModel.currentAmountBills
+        self.xbtm.priceModel.change_eccentricity(eccentricityChange)
+        self.emit("update")
+        return True
 
 class InfoWindow(Gtk.ApplicationWindow):
 
@@ -100,12 +123,14 @@ class InfoWindow(Gtk.ApplicationWindow):
         self.window.initiate_BTM(self.tBillsEntry.get_text(),
                                  self.cBillsEntry.get_text(),
                                  self.cBitcoinEntry.get_text())
-        self.destroy()
 
 class BTMApp(Gtk.Application):
 
     def __init__(self):
         Gtk.Application.__init__(self)
+        GObject.type_register(BTMWindow)
+        GObject.signal_new("update", BTMWindow,
+            GObject.SIGNAL_RUN_FIRST, GObject.TYPE_NONE, ())
 
     def do_activate(self):
         BTMWindow(self)
