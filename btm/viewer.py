@@ -3,8 +3,6 @@ from gi.repository import GObject, Gtk
 
 import decimal
 import sys
-import threading
-import time
 
 import btm
 import pid
