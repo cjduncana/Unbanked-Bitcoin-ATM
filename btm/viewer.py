@@ -38,6 +38,8 @@ class BTMWindow(Gtk.ApplicationWindow):
         GObject.timeout_add(10 * 1000, self.update_PID)
 
     def update_BTM_screen(self, window):
+        del window
+
         for child in self.get_children():
             self.remove(child)
 
@@ -72,10 +74,12 @@ class BTMWindow(Gtk.ApplicationWindow):
         self.show_all()
 
     def buy(self, button, amount):
+        del button
         self.xbtm.buy_bills(decimal.Decimal(amount))
         self.emit("update")
     
     def sell(self, button, amount):
+        del button
         self.xbtm.sell_bills(decimal.Decimal(amount))
         self.emit("update")
 
@@ -118,6 +122,7 @@ class InfoWindow(Gtk.ApplicationWindow):
         self.add(grid)
 
     def on_submit_clicked(self, button):
+        del button
         self.window.initiate_BTM(self.tBillsEntry.get_text(),
                                  self.cBillsEntry.get_text(),
                                  self.cBitcoinEntry.get_text())
