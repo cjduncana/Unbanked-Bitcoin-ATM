@@ -70,12 +70,20 @@ class BTMWindow(Gtk.ApplicationWindow):
             grid.attach(button, x + 3, 1, 1, 1)
 
         for x in range(1, 4):
-            button = Gtk.Button(label = self.xbtm.priceModel.calculate(
-                    decimal.Decimal(x))\
-                    .quantize(TWOPLACES).copy_negate())
-            button.set_can_focus(False)
-            button.set_margin_end(2)
-            button.connect("clicked", self.sell, x)
+            if self.xbtm.priceModel.totalAmountBills \
+            - self.xbtm.priceModel.currentAmountBills > x:
+                button = Gtk.Button(
+                    label = self.xbtm.priceModel.calculate(
+                        decimal.Decimal(x))\
+                            .quantize(TWOPLACES).copy_negate())
+                button.set_can_focus(False)
+                button.set_margin_end(2)
+                button.connect("clicked", self.sell, x)
+            else:
+                button = Gtk.Button("Too Many Bills")
+                button.set_can_focus(False)
+                button.set_margin_end(2)
+                button.set_sensitive(False)
             grid.attach(button, x + 2, 1, 1, 1)
 
         self.add(grid)
