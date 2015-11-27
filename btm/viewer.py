@@ -55,11 +55,18 @@ class BTMWindow(Gtk.ApplicationWindow):
             grid.attach(label, x, 0, 1, 1)
 
         for x in range(-3, 0):
-            button = Gtk.Button(label = self.xbtm.priceModel.calculate(
-                            decimal.Decimal(x)).quantize(TWOPLACES))
-            button.set_can_focus(False)
-            button.set_margin_end(2)
-            button.connect("clicked", self.buy, -x)
+            if self.xbtm.priceModel.currentAmountBills > -x:
+                button = Gtk.Button(
+                    label = self.xbtm.priceModel.calculate(
+                        decimal.Decimal(x)).quantize(TWOPLACES))
+                button.set_can_focus(False)
+                button.set_margin_end(2)
+                button.connect("clicked", self.buy, -x)
+            else:
+                button = Gtk.Button("Too Few Bills")
+                button.set_can_focus(False)
+                button.set_margin_end(2)
+                button.set_sensitive(False)
             grid.attach(button, x + 3, 1, 1, 1)
 
         for x in range(1, 4):
