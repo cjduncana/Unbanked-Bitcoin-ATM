@@ -55,6 +55,7 @@ class BTMWindow(Gtk.ApplicationWindow):
             grid.attach(label, x, 0, 1, 1)
 
         currentAmountBills = self.xbtm.priceModel.currentAmountBills
+        currentAmountBitcoin = self.xbtm.priceModel.currentAmountBitcoin
         totalAmountBills = self.xbtm.priceModel.totalAmountBills
 
         for x in range(-3, 0):
@@ -73,17 +74,24 @@ class BTMWindow(Gtk.ApplicationWindow):
 
         for x in range(1, 4):
             price = self.xbtm.priceModel.calculate(decimal.Decimal(x))
-            if totalAmountBills - currentAmountBills > x:
+            if totalAmountBills - currentAmountBills > x and \
+                    currentAmountBitcoin >= price.copy_negate():
                 button = Gtk.Button(
                     label = price.quantize(TWOPLACES).copy_negate())
                 button.set_can_focus(False)
                 button.set_margin_end(2)
                 button.connect("clicked", self.sell, x)
             else:
-                button = Gtk.Button("Too Many Bills")
-                button.set_can_focus(False)
-                button.set_margin_end(2)
-                button.set_sensitive(False)
+                if totalAmountBills - currentAmountBills <= x:
+                    button = Gtk.Button("Too Many Bills")
+                    button.set_can_focus(False)
+                    button.set_margin_end(2)
+                    button.set_sensitive(False)
+                else:
+                    button = Gtk.Button("Too Few Bitcoins")
+                    button.set_can_focus(False)
+                    button.set_margin_end(2)
+                    button.set_sensitive(False)
             grid.attach(button, x + 2, 1, 1, 1)
 
         self.add(grid)
