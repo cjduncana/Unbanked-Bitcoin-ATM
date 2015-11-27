@@ -54,8 +54,11 @@ class BTMWindow(Gtk.ApplicationWindow):
             label.set_margin_end(2)
             grid.attach(label, x, 0, 1, 1)
 
+        currentAmountBills = self.xbtm.priceModel.currentAmountBills
+        totalAmountBills = self.xbtm.priceModel.totalAmountBills
+
         for x in range(-3, 0):
-            if self.xbtm.priceModel.currentAmountBills > -x:
+            if currentAmountBills > -x:
                 button = Gtk.Button(
                     label = self.xbtm.priceModel.calculate(
                         decimal.Decimal(x)).quantize(TWOPLACES))
@@ -70,8 +73,7 @@ class BTMWindow(Gtk.ApplicationWindow):
             grid.attach(button, x + 3, 1, 1, 1)
 
         for x in range(1, 4):
-            if self.xbtm.priceModel.totalAmountBills \
-            - self.xbtm.priceModel.currentAmountBills > x:
+            if totalAmountBills - currentAmountBills > x:
                 button = Gtk.Button(
                     label = self.xbtm.priceModel.calculate(
                         decimal.Decimal(x))\
