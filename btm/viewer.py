@@ -17,6 +17,7 @@ class BTMWindow(Gtk.ApplicationWindow):
         self.connect("update", self.update_BTM_screen)
 
         self.info = InfoWindow(app, self)
+        self.info.connect("delete-event", self.exit)
         self.info.show_all()      
 
     def initiate_BTM(self, totalAmountBills,
@@ -91,6 +92,10 @@ class BTMWindow(Gtk.ApplicationWindow):
         self.xbtm.priceModel.change_eccentricity(eccentricityChange)
         self.emit("update")
         return True
+
+    def exit(self, widget, event):
+        del widget, event
+        sys.exit()
 
 class InfoWindow(Gtk.ApplicationWindow):
 
