@@ -59,18 +59,20 @@ class BTMWindow(Gtk.ApplicationWindow):
         totalAmountBills = self.xbtm.priceModel.totalAmountBills
 
         for x in range(-3, 0):
-            price = self.xbtm.priceModel.calculate(decimal.Decimal(x))
-            if currentAmountBills > -x:
+            try:
+                price = self.xbtm.priceModel.calculate(
+                    decimal.Decimal(x))
                 button = Gtk.Button(label = price.quantize(TWOPLACES))
                 button.set_can_focus(False)
                 button.set_margin_end(2)
                 button.connect("clicked", self.buy, -x)
-            else:
+            except (decimal.DivisionByZero, decimal.InvalidOperation):
                 button = Gtk.Button("Too Few Bills")
                 button.set_can_focus(False)
                 button.set_margin_end(2)
                 button.set_sensitive(False)
-            grid.attach(button, x + 3, 1, 1, 1)
+            finally:
+                grid.attach(button, x + 3, 1, 1, 1)
 
         for x in range(1, 4):
             try:
