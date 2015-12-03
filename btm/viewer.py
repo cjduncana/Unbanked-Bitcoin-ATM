@@ -120,8 +120,8 @@ class BTMWindow(Gtk.ApplicationWindow):
     def update_PID(self):
         self.xpid.add_point(self.xbtm.priceModel.currentAmountBills)
         controlVariable = self.xpid.update()
-        eccentricityChange = controlVariable \
-        / self.xbtm.priceModel.currentAmountBills
+        eccentricityChange = (controlVariable \
+        / self.xbtm.priceModel.currentAmountBills).exp()
         self.xbtm.priceModel.change_eccentricity(eccentricityChange)
         self.emit("update")
         return True

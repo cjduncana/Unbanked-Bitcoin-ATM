@@ -30,4 +30,4 @@ class PriceModel(object):
         self.currentAmountBitcoin += amount
 
     def change_eccentricity(self, eccentricity):
-        self.eccentricity += eccentricity
+        self.eccentricity *= eccentricity
