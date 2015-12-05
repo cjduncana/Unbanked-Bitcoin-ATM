@@ -57,16 +57,15 @@ for x in range(quantity):
 print("No more transactions will be made.\n")
 
 if currentAmountBills > xbtm.priceModel.currentAmountBills:
-  diff = currentAmountBills - xbtm.priceModel.currentAmountBills
-  print "There is now " + diff.to_eng_string() + " fewer dollars."
+    diff = currentAmountBills - xbtm.priceModel.currentAmountBills
+    print "There is now " + diff.to_eng_string() + " fewer dollars."
 elif currentAmountBills < xbtm.priceModel.currentAmountBills:
-  diff =  xbtm.priceModel.currentAmountBills - currentAmountBills
-  print "There is now " + diff.to_eng_string() + " more dollars."
+    diff =  xbtm.priceModel.currentAmountBills - currentAmountBills
+    print "There is now " + diff.to_eng_string() + " more dollars."
 
 if currentAmountBitcoin > xbtm.priceModel.currentAmountBitcoin:
-  diff = currentAmountBitcoin - xbtm.priceModel.currentAmountBitcoin
-  print "There is now " + diff.to_eng_string() + " fewer Bitcoins."
+    diff = currentAmountBitcoin - xbtm.priceModel.currentAmountBitcoin
+    print "There is now " + diff.to_eng_string() + " fewer Bitcoins."
 elif currentAmountBitcoin < xbtm.priceModel.currentAmountBitcoin:
-  diff =  xbtm.priceModel.currentAmountBitcoin - currentAmountBitcoin
-  print "There is now " + diff.to_eng_string() + " more Bitcoins."
-  
+    diff =  xbtm.priceModel.currentAmountBitcoin - currentAmountBitcoin
+    print "There is now " + diff.to_eng_string() + " more Bitcoins."
