@@ -25,6 +25,30 @@ currentAmountBitcoin = prices[0] * currentAmountBills
 xbtm = btm.BTM(totalAmountBills,
                currentAmountBills,
                currentAmountBitcoin)
+  
+class HomoEconPID(pid.PID):
+
+    def __init__(self):
+        pid.PID.__init__(self, currentAmountBills, currentAmountBills)
+
+    def update(self):
+        changeInTime = 1
+
+        processVariable = self.model[-1]
+
+        error = self.setPoint - processVariable
+        self.integral += self.ki * error * changeInTime
+        changeInInput = (processVariable - self.previousInput) \
+        / changeInTime
+
+        controlVariable = self.kp * error + self.integral - self.kd \
+        * changeInInput
+
+        self.previousInput = processVariable.normalize()
+
+        return controlVariable.normalize()
+
+xpid = HomoEconPID()
 
 for x in range(quantity):
     successfulTransaction = False
@@ -45,6 +69,12 @@ for x in range(quantity):
             xbtm.sell_bills(decimal.Decimal(1))
             successfulTransaction = True
             continue
+
+        xpid.add_point(xbtm.priceModel.currentAmountBills)
+        controlVariable = xpid.update()
+        eccentricityChange = (controlVariable \
+        / xbtm.priceModel.currentAmountBills).exp()
+        xbtm.priceModel.change_eccentricity(eccentricityChange)
 
         if successfulTransaction:
             successfulTransaction = False
