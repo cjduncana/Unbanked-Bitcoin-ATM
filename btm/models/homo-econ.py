@@ -1,6 +1,7 @@
 
 import csv
 import decimal
+import matplotlib.pyplot as plt
 
 import btm
 import pid
@@ -49,6 +50,12 @@ class HomoEconPID(pid.PID):
         return controlVariable.normalize()
 
 xpid = HomoEconPID()
+quantityBills = []
+quantityBitcoin = []
+
+def addToList():
+    quantityBills.append(xbtm.priceModel.currentAmountBills)
+    quantityBitcoin.append(xbtm.priceModel.currentAmountBitcoin)
 
 for x in range(quantity):
     successfulTransaction = False
@@ -58,6 +65,7 @@ for x in range(quantity):
             print "A dollar was bought for " + xprice.to_eng_string() \
             + " Bitcoins on " + dates[x]
             xbtm.buy_bills(decimal.Decimal(1))
+            addToList()
             successfulTransaction = True
             continue
 
@@ -67,6 +75,7 @@ for x in range(quantity):
             + xprice.copy_negate().to_eng_string() \
             + " Bitcoins on " + dates[x]
             xbtm.sell_bills(decimal.Decimal(1))
+            addToList()
             successfulTransaction = True
             continue
 
@@ -75,6 +84,7 @@ for x in range(quantity):
         eccentricityChange = (controlVariable \
         / xbtm.priceModel.currentAmountBills).exp()
         xbtm.priceModel.change_eccentricity(eccentricityChange)
+        addToList()
 
         if successfulTransaction:
             successfulTransaction = False
@@ -99,3 +109,11 @@ if currentAmountBitcoin > xbtm.priceModel.currentAmountBitcoin:
 elif currentAmountBitcoin < xbtm.priceModel.currentAmountBitcoin:
     diff =  xbtm.priceModel.currentAmountBitcoin - currentAmountBitcoin
     print "There is now " + diff.to_eng_string() + " more Bitcoins."
+
+plt.plot(range(len(quantityBills)), quantityBills, label = "Bills")
+plt.plot(range(len(quantityBitcoin)), quantityBitcoin,
+         label = "Bitcoin")
+plt.xlabel("Time")
+plt.ylabel("Quantity")
+plt.legend()
+plt.show()
